@@ -1,0 +1,121 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id=""
+                  title=""
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Le Protocole ARP" duration="0">
+        <h2 is-upgraded><strong>Principe</strong></h2>
+<p>ARP (Address Resolution Protocol ou protocole de résolution d&#39;adresse) est un protocole effectuant la traduction d&#39;une adresse de couche réseau (une adresse IPv4 par exemple) en une adresse MAC (une adresse Ethernet par exemple).</p>
+<h2 is-upgraded><strong>Le problème</strong></h2>
+<p>Un poste désire envoyer un paquet IP à un poste appartenant au même réseau physique que lui. Il doit connaître l&#39;adresse physique du destinataire. Or, il ne connait que son adresse IP.</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\bc7d570b0dbf9484.png"></p>
+<h2 is-upgraded><strong>Fonctionnement</strong></h2>
+<p>Le protocole ARP va lui permettre de trouver l&#39;adresse physique du poste destinataire. Ce mécanisme est transparent pour l&#39;utilisateur.</p>
+<p>Une table de conversion est générée dynamiquement sur chaque hôte dans ce qu&#39;on appelle l&#39;&#34;<strong>ARP cache</strong>&#34;. Quand ARP reçoit une demande de conversion, il consulte sa table et retourne l&#39;adresse physique si elle s&#39;y trouve sinon il envoie un paquet spécial <em>ARP Request Packet </em>à tous les hôtes du même réseau physique incluant l&#39;adresse IP à rechercher et en utilisant l&#39;adresse <strong>broadcast </strong>MAC <strong>FF:FF:FF:FF:FF:FF</strong></p>
+<p class="image-container"><img style="width: 368.00px" src="img\\a85003f13f1ca6d7.png"></p>
+<p>La machine possédant l&#39;adresse réseau IP demandée répond en lui renvoyant donc son adresse physique qui est alors placée dans la table ARP.</p>
+<p>Le contenu de l&#39;ARP Cache est généralement conservé jusqu&#39;à l&#39;extinction de la machine hôte. Par contre, il est vide au démarrage de l&#39;interface</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Machine Virtuelle A" duration="0">
+        <ol type="1" start="1">
+<li>Ouvrez VirtualBox puis démarrer une machine virtuelle sous linux ou créez en une nouvelle. Ce sera notre VM A</li>
+<li> Vérifiez que vous êtes connecté au réseau local en accès par pont. <em>(Prenez une capture d&#39;écran et ajouter là dans votre rendu)</em></li>
+<li>Taper la commande <code>ifconfig</code></li>
+<li>Quel est le nom du serveur qui vous a donné cette adresse IP ?</li>
+<li>Quel est le nom de l&#39;interface possédant l&#39;IP <code>127.0.0.1</code> ?</li>
+</ol>
+<aside class="special"><p>L&#39;interface <code>lo</code> est une interface virtuelle qui permet à la machine de se connecter à elle même sans passer par le réseau, ce qui est nécessaire pour de nombreux programmes.</p>
+</aside>
+<ol type="1" start="6">
+<li>Taper la commande <code>man arp</code>. A quoi sert cette commande ?</li>
+<li>En lisant le résultat de la commande précédente indiquez la description de l&#39;option <code>-v, --verbose</code></li>
+<li>Taper la commande <code>arp</code> puis la commande <code>arp -v</code>. Quelle est la différence ? </li>
+<li>Faire une capture d&#39;écran du résultat obtenu avec <code>arp -v</code></li>
+</ol>
+<aside class="special"><p>La commande <code>arp</code> (ou <code>arp -v</code>) permet d&#39;afficher le cache arp de la machine</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Machine Virtuelle B" duration="0">
+        <ol type="1" start="10">
+<li>Ouvrez VirtualBox puis démarrer une autre machine virtuelle sous linux ou créez en une nouvelle. Ce sera notre VM B</li>
+<li> Vérifiez que vous êtes connecté au réseau local en accès par pont.</li>
+<li>Quelle est l&#39;IP de votre machine ? Quelle commande avez-vous utilisée ?</li>
+<li>Tester la connexion entre la VM A et la VM B. Quelle commande avez-vous utilisée et sur quelle machine l&#39;avez-vous saisie ?</li>
+<li>Afficher la cache arp de la VM A. Quelle nouvelle entrée a été ajoutée ?</li>
+<li>Est-ce-possible de joindre une machine dans un autre réseau ?</li>
+<li>Testez la connexion avec la passerelle puis affichez le cache ARP.  <em>(Prenez une capture d&#39;écran et ajouter là dans votre rendu)</em></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Utilisation de la Machine Virtuelle B" duration="0">
+        <ol type="1" start="17">
+<li>Afficher la cache arp sur la VM B. Quelle commande avez-vous utilisée ?</li>
+<li>Tester la connexion avec la VM A. Quelle commande avez-vous utilisée ?</li>
+<li>Afficher la cache arp sur la VM B. Quelle est l&#39;adresse MAC de VM A ?</li>
+<li>Sur la VM A faire un <code>ifconfig</code>. A côté de quel mot l&#39;adresse MAC de VM A est-elle affichée ?</li>
+</ol>
+<h2 is-upgraded>De nouvelles commandes</h2>
+<ol type="1" start="21">
+<li>En utilisant le manuel de arp, indiquez la description de l&#39;option <code>-n, --numeric</code></li>
+<li>Taper la commande <code>arp -v</code> puis la commande <code>arp -n</code>. Quelle est la différence ? </li>
+<li>De même en utilisant le manuel de arp, indiquez la description de l&#39;option <code>--delete</code></li>
+<li>En utilisant la commande <code>arp --delete</code>, supprimer la VM A du cache ARP de la machine VM B. Quelle commande avez-vous utilisée ?</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Test avec un poste voisin" duration="0">
+        <ol type="1" start="25">
+<li>Relever l&#39;adresse IP ainsi que l&#39;adresse MAC du voisin.</li>
+<li>Sur la VM A. Si une ligne correspond déjà à cette adresse dans le cache arp, la supprimer.</li>
+<li>En utilisant la manuel de arp, utiliser la commande <code>arp -s</code> afin d&#39;ajouter manuellement une nouvelle entrée ARP statique dans la table. Cette nouvelle entrée correspondra à la VM A.</li>
+<li>Afficher le cache arp pour vérification.</li>
+<li>Tester cette entrée avec ping.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
